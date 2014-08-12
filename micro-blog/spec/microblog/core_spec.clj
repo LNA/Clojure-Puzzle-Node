@@ -1,4 +1,4 @@
-(ns micro-blog.core-spec
+(ns microblog.core-spec
   (:require [speclj.core :refer :all]
             [micro-blog.core :refer :all]))
 
