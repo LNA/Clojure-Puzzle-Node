@@ -10,4 +10,4 @@
 (defn parse-tweets [file]
   (with-open [rdr (reader file)]
     (doseq [line (line-seq rdr)]
-        (println { :sender (name-of-sender line) :content (content line)}))))
+      (println { :sender (name-of-sender line) :content (content line)}))))
