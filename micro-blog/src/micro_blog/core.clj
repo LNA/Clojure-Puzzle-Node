@@ -1,1 +1,0 @@
-(ns micro-blog.core)
