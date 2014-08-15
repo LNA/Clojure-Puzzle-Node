@@ -15,9 +15,9 @@
     (should-contain " @bar" (receivers "test_sender: @foo was @bar"))))
 
 (describe "parse-tweets"
-  (xit "returns a hash-map of the parsed tweets"
-    (should= " foo bar" (parse-tweets "data/complete_input.txt"))))
+  (it "returns a hash-map of a tweets content and sender"
+    (should= '({:content " hi @bob!", :sender "roberta"}) (parse-tweets  '("roberta: hi @bob!") :content))))
 
 (describe "parse-sender-and-receiver"
-  (xit "returns a hash-map of each tweets sender and receiver"
-    (should= " foo bar" (parse-sender-and-receiver "data/complete_input.txt"))))
+  (it "returns a hash-map of each tweets sender and receiver"
+    (should= '({:sender "roberta", :receivers (" @bob")}) (parse-tweets '("roberta: hi @bob!") :receivers))))

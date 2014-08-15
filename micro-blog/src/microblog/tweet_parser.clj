@@ -16,12 +16,28 @@
 (defn receivers [line]
   (re-seq #"[^:]@[a-zA-Z]+" line))
 
-(defn parse-tweets [file]
+(defn read-file [file]
   (with-open [rdr (reader file)]
-    (doseq [line (line-seq rdr)]
-      (println { :sender (name-of-sender line) :content (content line)}))))
+    (doall (line-seq rdr))))
 
-(defn parse-sender-and-receiver [file]
-  (with-open [rdr (reader file)]
-    (doseq [line (line-seq rdr)]
-      (println { :sender (name-of-sender line) :receivers (receivers line)}))))
+(defn output [requested-output input]
+  (if (= :content requested-output)
+      (content input)
+      (receivers input)))
+
+(defn parse-tweets [lines requested-output]
+  (map 
+    #(hash-map :sender (name-of-sender %), requested-output (output requested-output %)) lines))
+
+(defn output-tweets [file requested-output]
+  (let [lines (read-file file)
+        tweets (parse-tweets lines requested-output) ]
+    (doseq [line tweets]
+      (println line))))
+
+
+
+;doseq
+;tweets.each do |line|
+;  puts line
+;end
