@@ -19,6 +19,9 @@
     (should= '({:content " hi @bob!", :sender "roberta"}) (parse-tweets  '("roberta: hi @bob!") :content))))
 
 (describe "parse-sender-and-receiver"
-  (it "returns a hash-map of each tweets sender and receiver"
-    (should= '({:sender "roberta", :receivers (" @bob")}) (parse-tweets '("roberta: hi @bob!") :receivers))))
+  (it "returns a hash-map of senders and receivers"
+    (should= '({:sender "gia", :receivers (" @bob")}) (parse-tweets '("gia: hi @bob!") :receivers))))
 
+(describe "strip-symbol"
+  (it "strips any given symbol from a string"
+    (should= "foo" (strip-symbol "@foo" "@"))))

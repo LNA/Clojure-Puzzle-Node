@@ -16,6 +16,9 @@
 (defn content [line]
   (re-find #"[^:]+$" line))
 
+(defn strip-symbol [tweet to-strip]
+  (apply str (remove #((set to-strip) %) tweet)))
+
 (defn receivers [line]
   (re-seq #"[^:]@[a-zA-Z]+" line))
 
@@ -32,10 +35,6 @@
   (map 
     #(hash-map :sender (name-of-sender %), requested-output (output requested-output %)) lines))
 
-(defn find-first-level-connections [lines]
-  (map 
-    #(hash-map :sender (name-of-sender %), :level-one "1") lines))
-
 (defn output-tweets [file requested-output]
   (let [lines (read-file file)
         tweets (parse-tweets lines requested-output) ]
@@ -47,9 +46,4 @@
         level-one (find-first-level-connections lines)]
         (doseq [line level-one]
           (println line))))
-    
-
-;doseq
-;tweets.each do |line|
-;  puts line
-;end
+ 
