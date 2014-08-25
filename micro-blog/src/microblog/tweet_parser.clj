@@ -1,7 +1,8 @@
 (ns microblog.tweet-parser
  (:require 
    [clojure.string :refer [replace]]
-   [clojure.java.io :as io])
+   [clojure.java.io :as io]
+   [clojure.set])
  (:refer-clojure :exclude [replace]))
 
 (defn content-message []
@@ -37,10 +38,22 @@
 (defn tweets-from [user tweets]
   (filter #(= user (:sender %)) tweets))
 
-(defn users-who-received-tweets-from [user tweets]
-  (let [user-tweets (tweets-from user tweets)] 
-    (set (mapcat :receivers user-tweets))))
+(defn tweets-to [user tweets]
+  (filter #(contains? ( set(:receivers %)) user) tweets))
 
 (defn all-usernames [tweets]
   (set (concat (mapcat :receivers tweets)
                (map :sender tweets))))
+
+(defn users-who-received-tweets-from [user tweets]
+  (let [user-tweets (tweets-from user tweets)] 
+    (set (mapcat :receivers user-tweets))))
+
+(defn users-who-sent-tweets-to [user tweets]
+  (let [tweets-to-user (tweets-to user tweets)]
+    (set (map :sender tweets-to-user))))
+
+(defn first-level-connections [user tweets]
+  (let [receivers (users-who-received-tweets-from user tweets) 
+        senders   (users-who-sent-tweets-to user tweets)]
+  (clojure.set/intersection receivers senders)))
