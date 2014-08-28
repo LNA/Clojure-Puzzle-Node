@@ -9,5 +9,9 @@
       (prn tweet))
     (doseq [username (p/all-usernames parsed-tweets)]
       (println "--------------------users that received tweets from" username "--------------------------------")
-      (prn (p/users-who-received-tweets-from username parsed-tweets)))))
+      (prn (p/users-who-received-tweets-from username parsed-tweets)))
+    (doseq [username (p/all-usernames parsed-tweets)]
+      (println "--------------------users that form a first level connection with" username "--------------------------------")
+      (prn (p/first-level-connections-for username parsed-tweets)))))
+
     

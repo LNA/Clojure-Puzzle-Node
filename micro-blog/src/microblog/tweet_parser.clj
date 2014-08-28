@@ -1,5 +1,5 @@
 (ns microblog.tweet-parser
- (:require 
+ (:require
    [clojure.string :refer [replace]]
    [clojure.java.io :as io]
    [clojure.set])
@@ -25,9 +25,9 @@
     (doall (line-seq rdr))))
 
 (defn parse-tweets [lines]
-  (map 
-    #(hash-map :sender (name-of-sender %), 
-               :receivers (receivers %), 
+  (map
+    #(hash-map :sender (name-of-sender %),
+               :receivers (receivers %),
                :content (content %))
     lines))
 
@@ -46,14 +46,19 @@
                (map :sender tweets))))
 
 (defn users-who-received-tweets-from [user tweets]
-  (let [user-tweets (tweets-from user tweets)] 
+  (let [user-tweets (tweets-from user tweets)]
     (set (mapcat :receivers user-tweets))))
 
 (defn users-who-sent-tweets-to [user tweets]
   (let [tweets-to-user (tweets-to user tweets)]
     (set (map :sender tweets-to-user))))
 
-(defn first-level-connections [user tweets]
-  (let [receivers (users-who-received-tweets-from user tweets) 
+(defn first-level-connections-for [user tweets]
+  (let [receivers (users-who-received-tweets-from user tweets)
         senders   (users-who-sent-tweets-to user tweets)]
   (clojure.set/intersection receivers senders)))
+
+(defn first-level-connections-for-users-first-level-connections [user tweets]
+  (let [first-level-users (first-level-connections-for user tweets)]
+    (for [first-level-user first-level-users]
+      (first-level-connections-for first-level-user tweets))))
