@@ -66,3 +66,7 @@
 (defn second-level-connections-including-user [user tweets]
   (let [intermediate-connections (first-level-connections-for-users-first-level-connections user tweets)]
     (distinct (apply concat intermediate-connections))))
+
+(defn second-level-connections [user tweets]
+  (let [second-level-including-user (second-level-connections-including-user user tweets)]
+    (filter #(not= % user) second-level-including-user)))
