@@ -70,3 +70,8 @@
 (defn second-level-connections [user tweets]
   (let [second-level-including-user (second-level-connections-including-user user tweets)]
     (filter #(not= % user) second-level-including-user)))
+
+(defn first-level-connections-for-users-third-level-connections [user tweets]
+  (let [second-level-users (second-level-connections user tweets)]
+    (for [second-level-user second-level-users]
+    (first-level-connections-for second-level-user tweets))))

@@ -16,8 +16,8 @@
 
 (describe "parse-tweets"
   (it "returns a hash-map of a tweets content and sender"
-    (should= 
-      '({:content " hi @bob!", :sender "roberta" :receivers ["bob"]}) 
+    (should=
+      '({:content " hi @bob!", :sender "roberta" :receivers ["bob"]})
       (parse-tweets '("roberta: hi @bob!")))))
 
 (describe "tweets-from"
@@ -120,3 +120,15 @@
                         "mac: hi @ava"]
           parsed-tweets (parse-tweets tweets)]
           (second-level-connections "gia" parsed-tweets)))))
+
+(describe "first-level-connections-for-users-third-level-connections"
+  (it "gives the first-level-connections for the third-level-connections for a user"
+        (should= [#{"mac" "bob"}]
+          (let [tweets ["bob: hi @gia!"
+                        "gia: hi @bob."
+                        "bob: sup @other?"
+                        "other: sup @bob?"
+                        "other: sup @mac?"
+                        "mac: hi @other?"]
+          parsed-tweets (parse-tweets tweets)]
+          (first-level-connections-for-users-third-level-connections "gia" parsed-tweets)))))
