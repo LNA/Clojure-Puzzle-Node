@@ -69,12 +69,54 @@
       (should= #{"bob" "other"}
                (users-who-sent-tweets-to "gia" parsed-tweets)))))
 
-(describe "first-level-connections"
-  (it "gives first-level-connections"
+(describe "first-level-connections-for"
+  (it "gives first-level-connections for a user"
         (should= #{"bob"}
           (let [tweets ["bob: hi @gia!"
                         "gia: sup @jenny?"
                         "other: sup @gia?"
                         "gia: hi again @bob?"]
           parsed-tweets (parse-tweets tweets)]
-          (first-level-connections "gia" parsed-tweets)))))
+          (first-level-connections-for "gia" parsed-tweets)))))
+
+(describe "first-level-connections-for-users-first-level-connections"
+  (it "gives first-level-connections-for-users-first-level-connections"
+        (should= [#{"mac" "gia"} #{"other" "gia"}]
+          (let [tweets ["bob: hi @gia!"
+                        "bob: sup @other?"
+                        "other: sup @bob?"
+                        "gia: hi again @bob?"
+                        "gia: hi @ava"
+                        "ava: hi @gia"
+                        "ava: hi @mac"
+                        "mac: hi @ava"]
+          parsed-tweets (parse-tweets tweets)]
+          (first-level-connections-for-users-first-level-connections "gia" parsed-tweets)))))
+
+(describe "second-level-connections-including-user"
+  (it "gives second-level-connections-including-user"
+        (should= ["mac" "gia" "other"]
+          (let [tweets ["bob: hi @gia!"
+                        "bob: sup @other?"
+                        "other: sup @bob?"
+                        "gia: hi again @bob?"
+                        "gia: hi @ava"
+                        "ava: hi @gia"
+                        "ava: hi @mac"
+                        "mac: hi @ava"]
+          parsed-tweets (parse-tweets tweets)]
+          (second-level-connections-including-user "gia" parsed-tweets)))))
+
+(describe "second-level-connections"
+  (it "gives second-level-connections for a user"
+        (should= ["mac" "other"]
+          (let [tweets ["bob: hi @gia!"
+                        "bob: sup @other?"
+                        "other: sup @bob?"
+                        "gia: hi again @bob?"
+                        "gia: hi @ava"
+                        "ava: hi @gia"
+                        "ava: hi @mac"
+                        "mac: hi @ava"]
+          parsed-tweets (parse-tweets tweets)]
+          (second-level-connections "gia" parsed-tweets)))))
