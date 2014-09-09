@@ -107,7 +107,7 @@
           parsed-tweets (parse-tweets tweets)]
           (second-level-connections-including-user "gia" parsed-tweets)))))
 
-(describe "second-level-connections"
+(describe "second-level-connections-for"
   (it "gives second-level-connections for a user"
         (should= ["mac" "other"]
           (let [tweets ["bob: hi @gia!"
@@ -119,7 +119,7 @@
                         "ava: hi @mac"
                         "mac: hi @ava"]
           parsed-tweets (parse-tweets tweets)]
-          (second-level-connections "gia" parsed-tweets)))))
+          (second-level-connections-for "gia" parsed-tweets)))))
 
 (describe "trans-third-level-connections"
   (it "gives the first-level-connections for the third-level-connections for a user"
@@ -156,3 +156,45 @@
                         "mac: hi @other?"]
           parsed-tweets (parse-tweets tweets)]
           (third-level-connections-for "gia" parsed-tweets)))))
+
+(describe "third-level-connections-for"
+  (it "gives the third-level-connections for a user when a third level connections is already connected to the user"
+        (should= #{"mac"}
+          (let [tweets ["bob: hi @gia!"
+                        "gia: hi @bob."
+                        "bob: sup @other?"
+                        "other: sup @bob?"
+                        "other: sup @mac?"
+                        "mac: hi @other?"
+                        "other: sup @bob?"
+                        "bob: hi @other?"]
+          parsed-tweets (parse-tweets tweets)]
+          (third-level-connections-for "gia" parsed-tweets)))))
+
+(describe "trans-fourth-level-connections-for"
+  (it "gives the third-level-connections for a user"
+        (should= [#{"other" "nan"}]
+          (let [tweets ["bob: hi @gia!"
+                        "gia: hi @bob."
+                        "bob: sup @other?"
+                        "other: sup @bob?"
+                        "other: sup @mac?"
+                        "mac: hi @other?"
+                        "nan: hi @mac!"
+                        "mac: hi @nan"]
+          parsed-tweets (parse-tweets tweets)]
+          (trans-fourth-level-connections-for "gia" parsed-tweets)))))
+
+(describe "first-trans-fourth-level-connections-for"
+  (it "gives the third-level-connections for a user"
+        (should= #{"other" "nan"}
+          (let [tweets ["bob: hi @gia!"
+                        "gia: hi @bob."
+                        "bob: sup @other?"
+                        "other: sup @bob?"
+                        "other: sup @mac?"
+                        "mac: hi @other?"
+                        "nan: hi @mac!"
+                        "mac: hi @nan"]
+          parsed-tweets (parse-tweets tweets)]
+          (first-trans-fourth-level-connections-for "gia" parsed-tweets)))))

@@ -66,15 +66,15 @@
   (let [intermediate-connections (first-level-connections-for-users-first-level-connections user tweets)]
     (distinct (apply concat intermediate-connections))))
 
-(defn second-level-connections [user tweets]
+(defn second-level-connections-for [user tweets]
   (let [second-level-including-user (second-level-connections-including-user user tweets)]
     (filter #(not= % user) second-level-including-user)))
 
 (defn trans-third-level-connections [user tweets]
-  (let [second-level-users (second-level-connections user tweets)]
+  (let [second-level-users (second-level-connections-for user tweets)]
     (map (fn [x] (first-level-connections-for x tweets)) second-level-users)))
 
-(defn first-trans-third-level-connections-for [user tweets]
+(defn first-trans-third-level-connections-for [user tweets] ;duplication
   (first (trans-third-level-connections user tweets))) 
 
 (defn third-level-connections-for [user tweets]
@@ -82,12 +82,9 @@
         first-level-connections (first-level-connections-for user tweets)]
     (clojure.set/difference trans-level-connections first-level-connections)))
 
+(defn trans-fourth-level-connections-for [user tweets]
+  (let [third-level-users (third-level-connections-for user tweets)] 
+    (map (fn [x] (first-level-connections-for x tweets)) third-level-users)))
 
-
-
-
-
-
-
-
-
+(defn first-trans-fourth-level-connections-for [user tweets] ;duplication
+  (first (trans-fourth-level-connections-for user tweets))) 
