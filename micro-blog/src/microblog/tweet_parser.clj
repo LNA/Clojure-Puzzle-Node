@@ -60,7 +60,7 @@
 
 (defn first-level-connections-for-users-first-level-connections [user tweets]
   (let [first-level-users (first-level-connections-for user tweets)] 
-    (map (fn [x] (first-level-connections-for x tweets)) first-level-users))); higher level function.  Still returns a lazy seq
+    (map (fn [x] (first-level-connections-for x tweets)) first-level-users)))
 
 (defn second-level-connections-including-user [user tweets]
   (let [intermediate-connections (first-level-connections-for-users-first-level-connections user tweets)]
@@ -74,7 +74,7 @@
   (let [second-level-users (second-level-connections-for user tweets)]
     (map (fn [x] (first-level-connections-for x tweets)) second-level-users)))
 
-(defn first-trans-third-level-connections-for [user tweets] ;duplication
+(defn first-trans-third-level-connections-for [user tweets] 
   (first (trans-third-level-connections user tweets))) 
 
 (defn third-level-connections-for [user tweets]
@@ -86,7 +86,7 @@
   (let [third-level-users (third-level-connections-for user tweets)] 
     (map (fn [x] (first-level-connections-for x tweets)) third-level-users)))
 
-(defn first-trans-fourth-level-connections-for [user tweets] ;duplication
+(defn first-trans-fourth-level-connections-for [user tweets] 
   (first (trans-fourth-level-connections-for user tweets))) 
 
 (defn fourth-level-connections-for [user tweets]
