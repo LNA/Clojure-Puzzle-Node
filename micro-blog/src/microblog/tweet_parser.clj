@@ -43,7 +43,7 @@
 
 (defn all-usernames [tweets]
   (set (concat (mapcat :receivers tweets)
-               (map :sender tweets))))
+   (map :sender tweets))))
 
 (defn users-who-received-tweets-from [user tweets]
   (let [user-tweets (tweets-from user tweets)]
@@ -55,13 +55,12 @@
 
 (defn first-level-connections-for [user tweets]
   (let [receivers (users-who-received-tweets-from user tweets)
-        senders   (users-who-sent-tweets-to user tweets)]
-  (clojure.set/intersection receivers senders)))
+    senders   (users-who-sent-tweets-to user tweets)]
+    (clojure.set/intersection receivers senders)))
 
 (defn first-level-connections-for-users-first-level-connections [user tweets]
-  (let [first-level-users (first-level-connections-for user tweets)]
-    (for [first-level-user first-level-users]
-      (first-level-connections-for first-level-user tweets))))
+  (let [first-level-users (first-level-connections-for user tweets)] 
+    (map (fn [x] (first-level-connections-for x tweets)) first-level-users))); higher level function.  Still returns a lazy seq
 
 (defn second-level-connections-including-user [user tweets]
   (let [intermediate-connections (first-level-connections-for-users-first-level-connections user tweets)]
@@ -73,5 +72,6 @@
 
 (defn first-level-connections-for-users-third-level-connections [user tweets]
   (let [second-level-users (second-level-connections user tweets)]
-    (for [second-level-user second-level-users]
-    (first-level-connections-for second-level-user tweets))))
+    (map (fn [x] (first-level-connections-for x tweets)) second-level-users)))
+
+
