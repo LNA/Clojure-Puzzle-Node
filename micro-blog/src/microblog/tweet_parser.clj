@@ -55,7 +55,7 @@
 
 (defn first-level-connections-for [user tweets]
   (let [receivers (users-who-received-tweets-from user tweets)
-    senders   (users-who-sent-tweets-to user tweets)]
+        senders   (users-who-sent-tweets-to user tweets)]
     (clojure.set/intersection receivers senders)))
 
 (defn first-level-connections-for-users-first-level-connections [user tweets]
@@ -70,8 +70,24 @@
   (let [second-level-including-user (second-level-connections-including-user user tweets)]
     (filter #(not= % user) second-level-including-user)))
 
-(defn first-level-connections-for-users-third-level-connections [user tweets]
+(defn trans-third-level-connections [user tweets]
   (let [second-level-users (second-level-connections user tweets)]
     (map (fn [x] (first-level-connections-for x tweets)) second-level-users)))
+
+(defn first-trans-third-level-connections-for [user tweets]
+  (first (trans-third-level-connections user tweets))) 
+
+(defn third-level-connections-for [user tweets]
+  (let [trans-level-connections (first-trans-third-level-connections-for user tweets)
+        first-level-connections (first-level-connections-for user tweets)]
+    (clojure.set/difference trans-level-connections first-level-connections)))
+
+
+
+
+
+
+
+
 
 
