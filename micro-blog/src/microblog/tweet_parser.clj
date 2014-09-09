@@ -88,3 +88,8 @@
 
 (defn first-trans-fourth-level-connections-for [user tweets] ;duplication
   (first (trans-fourth-level-connections-for user tweets))) 
+
+(defn fourth-level-connections-for [user tweets]
+  (let [trans-level-connections (first-trans-fourth-level-connections-for user tweets)
+        second-level-connections (second-level-connections-for user tweets)]
+    (clojure.set/difference trans-level-connections second-level-connections)))
