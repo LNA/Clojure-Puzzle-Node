@@ -1,8 +1,7 @@
 (ns microblog.tweet-parser
  (:require
    [clojure.string :refer [replace]]
-   [clojure.java.io :as io]
-   [clojure.set])
+   [clojure.java.io :as io])
  (:refer-clojure :exclude [replace]))
 
 (defn name-of-sender [line]

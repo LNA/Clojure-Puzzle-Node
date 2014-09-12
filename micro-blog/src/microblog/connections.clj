@@ -1,7 +1,6 @@
 (ns microblog.connections
  (:require
    [clojure.string :refer [replace]]
-   [clojure.java.io :as io]
    [clojure.set])
  (:refer-clojure :exclude [replace]))
 
