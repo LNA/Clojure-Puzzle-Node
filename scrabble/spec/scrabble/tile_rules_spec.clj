@@ -1,8 +1,8 @@
-(ns scrabble.scorer_spec
+(ns scrabble.tile_rules_spec
   (:require [speclj.core :refer :all]
-            [scrabble.scorer :refer :all]))
+            [scrabble.tile_rules :refer :all]))
 
-(describe "Scorer"
+(describe "Tile Scorer"
           (it "gives the correct score for lower case letters"
               (should= 7
                        (score-letter "f"))
